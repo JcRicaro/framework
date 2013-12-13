@@ -896,11 +896,12 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 		// each of them individually so that their events get fired properly with a
 		// correct set of attributes in case the developers wants to check these.
 		$key = $instance->getKeyName();
-
+		$status = true;
 		foreach ($instance->whereIn($key, $ids)->get() as $model)
 		{
-			$model->delete();
+			if(!$model->delete()) $status = false;
 		}
+		return $status;
 	}
 
 	/**
